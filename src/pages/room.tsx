@@ -1,9 +1,11 @@
+import { Suspense } from 'react'
 import { useParams } from 'react-router-dom'
-import { ArrowRight, Share2 } from 'lucide-react'
+import { Share2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import amaLogo from '../assets/ama-logo.svg'
-import { toast } from 'sonner'
-import { Message } from '../components/message'
+import { Messages } from '../components/messages'
+import { CreateMessageForm } from '../components/create-message-form'
 
 export function Room() {
   const { roomId } = useParams()
@@ -41,36 +43,11 @@ export function Room() {
 
       <div className='h-px w-full bg-zinc-900' />
 
-      <form
-        className='flex items-center gap-2 bg-zinc-900 p-2 rounded-xl border border-zinc-800 ring-orange-400 ring-offset-2 ring-offset-zinc-900 focus-within:ring-1'>
-        <input
-          type='text'
-          name='theme'
-          placeholder='Qual a sua pergunta?'
-          autoComplete='off'
-          className='flex-1 bg-transparent mx-2 outline-none text-zinc-100 placeholder-zinc-500'
-        />
+      <CreateMessageForm />
 
-        <button
-          type='submit'
-          className='bg-orange-400 text-orange-950 px-3 py-1.5 flex rounded-lg font-medium text-sm transition-colors hover:bg-orange-500'
-        >
-          Criar sua pergunta
-          <ArrowRight className='size-4' />
-        </button>
-      </form>
-
-      <ol className='list-decimal list-outside px-3 space-y-8'>
-        <Message
-          text={'O que é GoLang e quais são suas principais vantagens em comparação com outras linguagens de programação como Python, Java ou C++?'}
-          amountOfReactions={100}
-          answered
-        />
-        <Message
-          text={'Como funcionam as goroutines em GoLang e por que elas são importantes para a concorrência e paralelismo?'}
-          amountOfReactions={32}
-        />
-      </ol>
+      <Suspense fallback={<div>Carregando...</div>}>
+        <Messages />
+      </Suspense>
     </div>
   )
 }
